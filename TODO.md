@@ -1,6 +1,6 @@
 # TODO (next 24h)
 
-1. Wire HTTP server routes to note store functions (`POST /notes`, `GET /notes`, `GET /health`).
+1. [x] Wire HTTP server routes to note store functions (`POST /notes`, `GET /notes`, `GET /health`).
 2. Add request validation + clear 400 responses for bad payloads.
 3. Add integration tests for route behavior (status codes + JSON payloads).
 4. Add lightweight in-memory reset utility for test isolation.

@@ -1,31 +1,37 @@
 import { createServer } from 'node:http';
 import { createNote, listNotes } from './index.js';
 
-const server = createServer(async (req, res) => {
+export const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', 'http://localhost');
 
-  if (req.method === 'GET' && url.pathname === '/health') {
+  const method = req.method;
+  const pathname = url.pathname;
+
+  if (method === 'GET' && pathname === '/health') {
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ ok: true }));
     return;
   }
 
-  if (req.method === 'GET' && url.pathname === '/notes') {
+  if (method === 'GET' && pathname === '/notes') {
     const tag = url.searchParams.get('tag') ?? undefined;
+    const allNotes = listNotes(tag);
     res.writeHead(200, { 'content-type': 'application/json' });
-    res.end(JSON.stringify({ notes: listNotes(tag) }));
+    res.end(JSON.stringify({ notes: allNotes }));
     return;
   }
 
-  if (req.method === 'POST' && url.pathname === '/notes') {
+  if (method === 'POST' && pathname === '/notes') {
     let body = '';
-    for await (const chunk of req) body += chunk;
+    for await (const chunk of req) {
+      body += chunk;
+    }
 
     try {
       const payload = JSON.parse(body || '{}');
-      const note = createNote(payload);
+      const newNote = createNote(payload);
       res.writeHead(201, { 'content-type': 'application/json' });
-      res.end(JSON.stringify({ note }));
+      res.end(JSON.stringify({ note: newNote }));
     } catch (error) {
       res.writeHead(400, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ error: (error as Error).message }));
@@ -37,7 +43,9 @@ const server = createServer(async (req, res) => {
   res.end(JSON.stringify({ error: 'not found' }));
 });
 
-const port = Number(process.env.PORT || 3000);
-server.listen(port, () => {
-  console.log(`quick-notes-api listening on :${port}`);
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const port = Number(process.env.PORT || 3000);
+  server.listen(port, () => {
+    console.log(`quick-notes-api listening on :${port}`);
+  });
+}
