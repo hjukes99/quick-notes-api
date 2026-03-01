@@ -32,6 +32,31 @@ test('listNotes filters by tag', () => {
   assert.equal(ideaNotes[0].title, 'One');
 });
 
+test('listNotes supports pagination', () => {
+  resetNotes();
+  createNote({ title: 'One', body: 'A' });
+  createNote({ title: 'Two', body: 'B' });
+  createNote({ title: 'Three', body: 'C' });
+
+  // Order is Three, Two, One
+  const allNotes = listNotes();
+  assert.equal(allNotes.length, 3);
+  
+  const limited = listNotes(undefined, 2);
+  assert.equal(limited.length, 2);
+  assert.equal(limited[0].title, 'Three');
+  assert.equal(limited[1].title, 'Two');
+  
+  const offsetted = listNotes(undefined, 2, 1);
+  assert.equal(offsetted.length, 2);
+  assert.equal(offsetted[0].title, 'Two');
+  assert.equal(offsetted[1].title, 'One');
+  
+  const offsettedOnly = listNotes(undefined, undefined, 2);
+  assert.equal(offsettedOnly.length, 1);
+  assert.equal(offsettedOnly[0].title, 'One');
+});
+
 test('Integration tests', async (t) => {
   let baseUrl: string;
 
@@ -105,6 +130,49 @@ test('Integration tests', async (t) => {
     const body = await res.json();
     assert.equal(body.notes.length, 1);
     assert.equal(body.notes[0].title, 'Integration');
+  });
+
+  await t.test('GET /notes supports pagination (limit, offset)', async () => {
+    await fetch(`${baseUrl}/_reset`, { method: 'POST' });
+    createNote({ title: 'Note 1', body: '...' });
+    createNote({ title: 'Note 2', body: '...' });
+    createNote({ title: 'Note 3', body: '...' });
+    
+    // Notes are: Note 3, Note 2, Note 1
+    const res = await fetch(`${baseUrl}/notes?limit=2&offset=1`);
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.notes.length, 2);
+    assert.equal(body.notes[0].title, 'Note 2');
+    assert.equal(body.notes[1].title, 'Note 1');
+  });
+
+  await t.test('GET /notes handles invalid limit', async () => {
+    const res = await fetch(`${baseUrl}/notes?limit=invalid`);
+    assert.equal(res.status, 400);
+    const body = await res.json();
+    assert.deepEqual(body, { error: 'limit must be a non-negative number' });
+  });
+
+  await t.test('GET /notes handles negative limit', async () => {
+    const res = await fetch(`${baseUrl}/notes?limit=-1`);
+    assert.equal(res.status, 400);
+    const body = await res.json();
+    assert.deepEqual(body, { error: 'limit must be a non-negative number' });
+  });
+
+  await t.test('GET /notes handles invalid offset', async () => {
+    const res = await fetch(`${baseUrl}/notes?offset=invalid`);
+    assert.equal(res.status, 400);
+    const body = await res.json();
+    assert.deepEqual(body, { error: 'offset must be a non-negative number' });
+  });
+
+  await t.test('GET /notes handles negative offset', async () => {
+    const res = await fetch(`${baseUrl}/notes?offset=-1`);
+    assert.equal(res.status, 400);
+    const body = await res.json();
+    assert.deepEqual(body, { error: 'offset must be a non-negative number' });
   });
 
   await t.test('POST /notes handles bad JSON payload', async () => {

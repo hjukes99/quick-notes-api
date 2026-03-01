@@ -40,10 +40,17 @@ export function createNote(input: NoteInput): Note {
   return note;
 }
 
-export function listNotes(tag?: string): Note[] {
-  if (!tag) return [...notes];
-  const normalized = tag.trim().toLowerCase();
-  return notes.filter((n) => n.tags.some((t) => t.toLowerCase() === normalized));
+export function listNotes(tag?: string, limit?: number, offset?: number): Note[] {
+  let filteredNotes = notes;
+  if (tag) {
+    const normalized = tag.trim().toLowerCase();
+    filteredNotes = notes.filter((n) => n.tags.some((t) => t.toLowerCase() === normalized));
+  }
+  
+  const start = offset ?? 0;
+  const end = limit !== undefined ? start + limit : undefined;
+  
+  return filteredNotes.slice(start, end);
 }
 
 export function resetNotes(): void {

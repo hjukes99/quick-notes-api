@@ -27,7 +27,31 @@ export const server = createServer(async (req, res) => {
 
   if (method === 'GET' && pathname === '/notes') {
     const tag = url.searchParams.get('tag') ?? undefined;
-    const allNotes = listNotes(tag);
+    const limitStr = url.searchParams.get('limit');
+    const offsetStr = url.searchParams.get('offset');
+
+    let limit: number | undefined;
+    let offset: number | undefined;
+
+    if (limitStr !== null) {
+      limit = Number(limitStr);
+      if (Number.isNaN(limit) || limit < 0) {
+        res.writeHead(400, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ error: 'limit must be a non-negative number' }));
+        return;
+      }
+    }
+
+    if (offsetStr !== null) {
+      offset = Number(offsetStr);
+      if (Number.isNaN(offset) || offset < 0) {
+        res.writeHead(400, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ error: 'offset must be a non-negative number' }));
+        return;
+      }
+    }
+
+    const allNotes = listNotes(tag, limit, offset);
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ notes: allNotes }));
     return;
