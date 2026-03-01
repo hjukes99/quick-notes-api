@@ -57,8 +57,19 @@
     "app": "quick-notes-api",
     "sessionId": "8792932669675538957",
     "repo": "hjukes99/quick-notes-api",
-    "status": "Planning",
+    "status": "Applied",
     "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add npm script for npm run dev with live reload.' and keep tests passing.",
-    "url": "https://jules.google.com/session/8792932669675538957"
+    "url": "https://jules.google.com/session/8792932669675538957",
+    "appliedAt": "2026-03-01T04:52:55-06:00",
+    "validation": "npm test pass"
+  },
+  {
+    "createdAt": "2026-03-01T05:51:08-06:00",
+    "app": "quick-notes-api",
+    "sessionId": "12719032009394835289",
+    "repo": "hjukes99/quick-notes-api",
+    "status": "Planning",
+    "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add OpenAPI-ish endpoint docs in README examples.' and keep tests passing.",
+    "url": "https://jules.google.com/session/12719032009394835289"
   }
 ]
