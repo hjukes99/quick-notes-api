@@ -24,8 +24,10 @@
     "app": "quick-notes-api",
     "sessionId": "12594549820978045401",
     "repo": "hjukes99/quick-notes-api",
-    "status": "Planning",
+    "status": "Applied",
     "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add request validation + clear 400 responses for bad payloads.' and keep tests passing.",
-    "url": "https://jules.google.com/session/12594549820978045401"
+    "url": "https://jules.google.com/session/12594549820978045401",
+    "appliedAt": "2026-02-28T21:52:00-06:00",
+    "validation": "npm test pass"
   }
 ]
