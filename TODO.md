@@ -8,4 +8,4 @@
 6. [x] Add OpenAPI-ish endpoint docs in README examples.
 7. [x] Add simple pagination support (`limit`, `offset`) for `GET /notes`.
 8. [x] Add tag normalization (trim/lowercase/dedupe).
-9. Add smoke test script for Docker container startup.
+9. [x] Add smoke test script for Docker container startup.

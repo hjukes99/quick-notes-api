@@ -71,7 +71,7 @@ test('Integration tests', async (t) => {
   let baseUrl: string;
 
   t.before(() => {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       server.listen(0, () => {
         const address = server.address();
         if (address && typeof address === 'object') {
@@ -83,7 +83,7 @@ test('Integration tests', async (t) => {
   });
 
   t.after(() => {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       server.close(() => resolve());
     });
   });
