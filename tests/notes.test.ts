@@ -11,6 +11,16 @@ test('createNote creates a note', () => {
   assert.deepEqual(note.tags, ['build']);
 });
 
+test('createNote normalizes tags (trim, lowercase, dedupe)', () => {
+  resetNotes();
+  const note = createNote({
+    title: 'Idea',
+    body: 'Ship faster',
+    tags: [' BUILD ', 'build', 'Ship', '  sHip ']
+  });
+  assert.deepEqual(note.tags, ['build', 'ship']);
+});
+
 test('listNotes returns newest first', async () => {
   resetNotes();
   const first = createNote({ title: 'First', body: 'A', tags: ['x'] });

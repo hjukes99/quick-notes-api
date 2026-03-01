@@ -28,11 +28,14 @@ export function createNote(input: NoteInput): Note {
     if (!input.tags.every(t => typeof t === 'string')) throw new Error('tags must be an array of strings');
   }
 
+  const rawTags = (input.tags ?? []).map((t) => t.trim().toLowerCase()).filter(Boolean);
+  const uniqueTags = Array.from(new Set(rawTags));
+
   const note: Note = {
     id: `note_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     title: input.title.trim(),
     body: input.body.trim(),
-    tags: (input.tags ?? []).map((t) => t.trim()).filter(Boolean),
+    tags: uniqueTags,
     createdAt: new Date().toISOString()
   };
 
@@ -44,7 +47,7 @@ export function listNotes(tag?: string, limit?: number, offset?: number): Note[]
   let filteredNotes = notes;
   if (tag) {
     const normalized = tag.trim().toLowerCase();
-    filteredNotes = notes.filter((n) => n.tags.some((t) => t.toLowerCase() === normalized));
+    filteredNotes = notes.filter((n) => n.tags.includes(normalized));
   }
   
   const start = offset ?? 0;

@@ -7,5 +7,5 @@
 5. [x] Add npm script for `npm run dev` with live reload.
 6. [x] Add OpenAPI-ish endpoint docs in README examples.
 7. [x] Add simple pagination support (`limit`, `offset`) for `GET /notes`.
-8. Add tag normalization (trim/lowercase/dedupe).
+8. [x] Add tag normalization (trim/lowercase/dedupe).
 9. Add smoke test script for Docker container startup.
