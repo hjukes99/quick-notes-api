@@ -68,8 +68,10 @@
     "app": "quick-notes-api",
     "sessionId": "12719032009394835289",
     "repo": "hjukes99/quick-notes-api",
-    "status": "Planning",
+    "status": "Applied",
     "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add OpenAPI-ish endpoint docs in README examples.' and keep tests passing.",
-    "url": "https://jules.google.com/session/12719032009394835289"
+    "url": "https://jules.google.com/session/12719032009394835289",
+    "appliedAt": "2026-03-01T06:50:00-06:00",
+    "validation": "npm test pass"
   }
 ]
