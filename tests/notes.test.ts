@@ -60,8 +60,33 @@ test('Integration tests', async (t) => {
     assert.deepEqual(body, { ok: true });
   });
 
+  await t.test('POST /_reset clears notes', async () => {
+    createNote({ title: 'To be cleared', body: '...' });
+    const resetRes = await fetch(`${baseUrl}/_reset`, { method: 'POST' });
+    assert.equal(resetRes.status, 200);
+    const resetBody = await resetRes.json();
+    assert.deepEqual(resetBody, { ok: true });
+
+    const notesRes = await fetch(`${baseUrl}/notes`);
+    const notesBody = await notesRes.json();
+    assert.equal(notesBody.notes.length, 0);
+  });
+
+  await t.test('POST /_reset forbidden in production', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    try {
+      const resetRes = await fetch(`${baseUrl}/_reset`, { method: 'POST' });
+      assert.equal(resetRes.status, 403);
+      const resetBody = await resetRes.json();
+      assert.deepEqual(resetBody, { error: 'forbidden in production' });
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
+
   await t.test('POST /notes handles valid payload', async () => {
-    resetNotes();
+    await fetch(`${baseUrl}/_reset`, { method: 'POST' });
     const res = await fetch(`${baseUrl}/notes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

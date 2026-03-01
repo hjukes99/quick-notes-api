@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { createNote, listNotes } from './index.js';
+import { createNote, listNotes, resetNotes } from './index.js';
 
 export const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', 'http://localhost');
@@ -8,6 +8,18 @@ export const server = createServer(async (req, res) => {
   const pathname = url.pathname;
 
   if (method === 'GET' && pathname === '/health') {
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/_reset') {
+    if (process.env.NODE_ENV === 'production') {
+      res.writeHead(403, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'forbidden in production' }));
+      return;
+    }
+    resetNotes();
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ ok: true }));
     return;
