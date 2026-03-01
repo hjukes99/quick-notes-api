@@ -15,8 +15,18 @@ export interface Note {
 const notes: Note[] = [];
 
 export function createNote(input: NoteInput): Note {
-  if (!input.title?.trim()) throw new Error('title is required');
-  if (!input.body?.trim()) throw new Error('body is required');
+  if (!input.title) throw new Error('title is required');
+  if (typeof input.title !== 'string') throw new Error('title must be a string');
+  if (!input.title.trim()) throw new Error('title is required');
+  
+  if (!input.body) throw new Error('body is required');
+  if (typeof input.body !== 'string') throw new Error('body must be a string');
+  if (!input.body.trim()) throw new Error('body is required');
+
+  if (input.tags !== undefined) {
+    if (!Array.isArray(input.tags)) throw new Error('tags must be an array of strings');
+    if (!input.tags.every(t => typeof t === 'string')) throw new Error('tags must be an array of strings');
+  }
 
   const note: Note = {
     id: `note_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,

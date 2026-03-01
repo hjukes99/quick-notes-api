@@ -13,8 +13,19 @@
     "app": "quick-notes-api",
     "sessionId": "12596641830960758021",
     "repo": "hjukes99/quick-notes-api",
-    "status": "Planning",
+    "status": "Applied",
     "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Wire HTTP server routes to note store functions (POST /notes, GET /notes, GET /health)' and keep tests passing.",
-    "url": "https://jules.google.com/session/12596641830960758021"
+    "url": "https://jules.google.com/session/12596641830960758021",
+    "appliedAt": "2026-02-28T17:54:00-06:00",
+    "validation": "npm test pass"
+  },
+  {
+    "createdAt": "2026-02-28T18:51:00-06:00",
+    "app": "quick-notes-api",
+    "sessionId": "12594549820978045401",
+    "repo": "hjukes99/quick-notes-api",
+    "status": "Planning",
+    "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add request validation + clear 400 responses for bad payloads.' and keep tests passing.",
+    "url": "https://jules.google.com/session/12594549820978045401"
   }
 ]

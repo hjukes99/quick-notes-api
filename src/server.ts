@@ -27,8 +27,22 @@ export const server = createServer(async (req, res) => {
       body += chunk;
     }
 
+    let payload;
     try {
-      const payload = JSON.parse(body || '{}');
+      payload = JSON.parse(body || '{}');
+    } catch (error) {
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Invalid JSON payload' }));
+      return;
+    }
+
+    if (typeof payload !== 'object' || payload === null || Array.isArray(payload)) {
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Payload must be a JSON object' }));
+      return;
+    }
+
+    try {
       const newNote = createNote(payload);
       res.writeHead(201, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ note: newNote }));
