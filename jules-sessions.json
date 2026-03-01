@@ -101,9 +101,11 @@
       "app": "quick-notes-api",
       "sessionId": "9383219489299993478",
       "repo": "hjukes99/quick-notes-api",
-      "status": "Planning",
+      "status": "Applied",
       "task": "Codex Lab: Quick Notes API \u2014 complete TODO item 'Add smoke test script for Docker container startup.' and keep tests passing.",
-      "url": "https://jules.google.com/session/9383219489299993478"
+      "url": "https://jules.google.com/session/9383219489299993478",
+      "appliedAt": "2026-03-01T14:38:00-06:00",
+      "validation": "npm test pass"
     }
   ]
 }
